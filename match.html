@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Matches – Carpooling</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <header>
+        <h1>Find Carpool Matches</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="rider.html">Register as Rider</a>
+            <a href="provider.html">Register as Provider</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Search by Section and Time</h2>
+            <!-- We will create match.php later -->
+            <form action="match.php" method="get">
+                <label for="role">I am a:</label>
+                <select id="role" name="role">
+                    <option value="rider">Rider (find providers)</option>
+                    <option value="provider">Provider (find riders)</option>
+                </select>
+
+                <label for="section">Section (A–D):</label>
+                <select id="section" name="section">
+                    <option value="A">Section A</option>
+                    <option value="B">Section B</option>
+                    <option value="C">Section C</option>
+                    <option value="D">Section D</option>
+                </select>
+
+                <label for="time">Approx. time (arrival at Langara):</label>
+                <input type="time" id="time" name="time">
+
+                <button type="submit">Search</button>
+            </form>
+
+            <!-- Later, match.php will return results that we show below -->
+            <div id="results">
+                <!-- Placeholder: backend will inject results here -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <small>CPSC 2221 – Carpooling Project</small>
+    </footer>
+</body>
+</html>

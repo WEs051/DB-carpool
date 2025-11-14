@@ -3,10 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="index.css">
-    <title>Carpool</title>
+    <title>Carpooling – Langara</title>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-        
+    <header>
+        <h1>Langara Carpooling</h1>
+        <p>Connect riders and providers by section and schedule.</p>
+        <nav>
+            <a href="rider.html">Register as Rider</a>
+            <a href="provider.html">Register as Provider</a>
+            <a href="match.html">Find Matches</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>About this system</h2>
+            <p>
+                This application helps Langara students and staff who have vehicles
+                (providers) share rides with those who need transportation (riders).
+                Vancouver is divided into 4 sections; riders and providers are matched
+                based on section and schedule.
+            </p>
+        </section>
+
+        <section>
+            <h2>What would you like to do?</h2>
+            <div class="card-container">
+                <div class="card">
+                    <h3>I need a ride</h3>
+                    <p>Register as a rider and provide your address and schedule.</p>
+                    <a class="button" href="rider.html">Register as Rider</a>
+                </div>
+                <div class="card">
+                    <h3>I can provide a ride</h3>
+                    <p>Register as a provider and add your vehicle and time slots.</p>
+                    <a class="button" href="provider.html">Register as Provider</a>
+                </div>
+                <div class="card">
+                    <h3>View matches</h3>
+                    <p>See available providers or riders based on section and time.</p>
+                    <a class="button" href="match.html">Find Matches</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <small>CPSC 2221 – Carpooling Project</small>
+    </footer>
 </body>
 </html>
