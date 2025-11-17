@@ -2,60 +2,62 @@
 require 'db.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $name          = $_POST['name'] ?? null;
-    $studentId     = $_POST['studentId'] ?? null;
-    $email         = $_POST['email'] ?? null;
-    $phone         = $_POST['phone'] ?? null;
 
-    $street        = $_POST['street'] ?? null;
-    $city          = $_POST['city'] ?? null;
-    $postalCode    = $_POST['postalCode'] ?? null;
-    $section       = $_POST['section'] ?? null;
+    // Read form fields
+    $name       = $_POST['name'];
+    $studentId  = $_POST['studentId'];
+    $email      = $_POST['email'];
+    $phone      = $_POST['phone'];
 
-    $days          = $_POST['days'] ?? null;
-    $arrivalTime   = $_POST['arrivalTime'] ?? null;
-    $departureTime = $_POST['departureTime'] ?? null;
+    $street     = $_POST['street'];
+    $city       = $_POST['city'];  // you may ignore for DB
+    $postalCode = $_POST['postalCode'];
+    $section    = $_POST['section'];   // A,B,C,D
 
-    if (!$name || !$studentId || !$email || !$street || !$postalCode || !$section) {
-        die("Missing required fields. Please go back and fill in all required fields.");
-    }
+    $days       = $_POST['days'];
+    $arrival    = $_POST['arrivalTime'];
+    $depart     = $_POST['departureTime'];
 
+    // Convert section A/B/C/D → 1/2/3/4 (ZoneID)
+    $zoneMap = ['A'=>1, 'B'=>2, 'C'=>3, 'D'=>4];
+    $zoneID = $zoneMap[$section];
+
+    // 1️⃣ Insert address
     $stmt = $conn->prepare("
-        INSERT INTO Riders
-            (name, studentId, email, phone, street, city, postalCode, section, days, arrivalTime, departureTime)
-        VALUES
-            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO Address (StreetName, StreetNumber, PostalCode, Zone_ID)
+        VALUES (?, 0, ?, ?)
     ");
+    $stmt->bind_param("ssi", $street, $postalCode, $zoneID);
 
-    if (!$stmt) {
-        die("Prepare failed: " . $conn->error);
-    }
+    if(!$stmt->execute()) die("Address insert failed: " . $stmt->error);
 
-    $stmt->bind_param(
-        "sssssssssss",
-        $name,
-        $studentId,
-        $email,
-        $phone,
-        $street,
-        $city,
-        $postalCode,
-        $section,
-        $days,
-        $arrivalTime,
-        $departureTime
-    );
+    $addressID = $stmt->insert_id;
+    $stmt->close();
 
-    if ($stmt->execute()) {
-        echo "<p>Rider registered successfully!</p>";
-        echo '<p><a href="rider.html">Register another rider</a> | <a href="index.html">Back to home</a></p>';
-    } else {
-        echo "Error inserting rider: " . $stmt->error;
-    }
+
+    // 2️⃣ Insert into StudentUser
+    $stmt = $conn->prepare("
+        INSERT INTO StudentUser
+        (StudentID, StudentName, Gender, AddressID, StreetName, StreetNumber, PostalCode, Zone_ID, Height)
+        VALUES (?, ?, '', ?, ?, 0, ?, ?, NULL)
+    ");
+    $stmt->bind_param("isissi", $studentId, $name, $addressID, $street, $postalCode, $zoneID);
+
+    if(!$stmt->execute()) die("StudentUser insert failed: " . $stmt->error);
+    $stmt->close();
+
+
+    // 3️⃣ Insert into Riders (subtype)
+    $stmt = $conn->prepare("INSERT INTO Riders (StudentID) VALUES (?)");
+    $stmt->bind_param("i", $studentId);
+
+    if(!$stmt->execute()) die("Riders insert failed: " . $stmt->error);
+
+    echo "<h2>Rider registered successfully!</h2>";
+    echo '<p><a href="rider.html">Register another rider</a></p>';
+    echo '<p><a href="index.html">Back to home</a></p>';
 
     $stmt->close();
     $conn->close();
-} else {
-    echo "Invalid request method.";
 }
 ?>

@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
 $user = "root"; 
-$pass = "!uhj[rBq8s(bRh15";          
-$dbname = "m3temp"; 
+$pass = "Senpara@8";               // EMPTY password for XAMPP
+$dbname = "DB_carpool";   // exact name of the database you created
 
 $conn = new mysqli($host, $user, $pass, $dbname);
 
