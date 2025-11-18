@@ -20,7 +20,135 @@
         <section>
             <h2>Your Information</h2>
             <!-- We will create insert_provider.php later -->
-            <form action="insert_provider.php" method="post">
+
+        </section>
+    </main>
+        <form action="insertProvider.php" method="post">
+
+        <fieldset>
+            <legend>Personal Info</legend>
+
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="studentId">Student / Employee ID:</label>
+            <input type="text" id="studentId" name="studentId" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone">
+        </fieldset>
+
+        <fieldset>
+            <legend>Address & Section</legend>
+
+            <label for="street">Street Name:</label>
+            <input type="text" id="street" name="street" required>
+
+            <label for="streetNumber">Street Number:</label>
+            <input type="number" id="streetNumber" name="streetNumber" required>
+
+            <label for="postalCode">Postal Code:</label>
+            <input type="text" id="postalCode" name="postalCode" required>
+
+            <label for="section">Section (A–D):</label>
+            <select id="section" name="section" required>
+                <option value="A">Section A</option>
+                <option value="B">Section B</option>
+                <option value="C">Section C</option>
+                <option value="D">Section D</option>
+            </select>
+        </fieldset>
+
+        <fieldset>
+            <legend>Vehicle Info</legend>
+
+            <label for="plate">License Plate:</label>
+            <input type="text" id="plate" name="plate" required>
+
+            <label for="make">Car Make:</label>
+            <input type="text" id="make" name="make">
+
+            <label for="model">Car Model:</label>
+            <input type="text" id="model" name="model">
+
+            <label for="capacity">Available Seats (excluding driver):</label>
+            <input type="number" id="capacity" name="capacity" min="1" max="6" required>
+            <!-- capacity is for UI only; DB has no column for it in Option A -->
+        </fieldset>
+
+        <button type="submit">Register Provider</button>
+    </form>
+
+    <footer>
+        <small>CPSC 2221 – Carpooling Project</small>
+    </footer>
+</body>
+</html>
+
+
+            <!-- <form action="insertProvider.php" method="post">
+
+    <fieldset>
+        <legend>Personal Info</legend>
+
+        <label>Full Name:</label>
+        <input type="text" name="name" required>
+
+        <label>Student / Employee ID:</label>
+        <input type="text" name="studentId" required>
+
+        <label>Email:</label>
+        <input type="email" name="email" required>
+
+        <label>Phone:</label>
+        <input type="tel" name="phone">
+    </fieldset>
+
+    <fieldset>
+        <legend>Address</legend>
+
+        <label>Street Name:</label>
+        <input type="text" name="street" required>
+
+        <label>Street Number:</label>
+        <input type="number" name="streetNumber" required>
+
+        <label>Postal Code:</label>
+        <input type="text" name="postalCode" required>
+
+        <label>Zone (A–D):</label>
+        <select name="zone" required>
+            <option value="1">A</option>
+            <option value="2">B</option>
+            <option value="3">C</option>
+            <option value="4">D</option>
+        </select>
+    </fieldset>
+
+    <fieldset>
+        <legend>Vehicle Info</legend>
+
+        <label>License Plate:</label>
+        <input type="text" name="plate" required>
+
+        <label>Car Make:</label>
+        <input type="text" name="make">
+
+        <label>Car Model:</label>
+        <input type="text" name="model">
+
+        <label>Available Seats (excluding driver):</label>
+        <input type="number" name="capacity" min="1" max="6" required>
+    </fieldset>
+
+        <button type="submit">Register Provider</button>
+    </form> -->
+
+
+            <!-- <form action="insertProvider.php" method="post">
                 <fieldset>
                     <legend>Personal Info</legend>
 
@@ -93,12 +221,4 @@
                 </fieldset>
 
                 <button type="submit">Register Provider</button>
-            </form>
-        </section>
-    </main>
-
-    <footer>
-        <small>CPSC 2221 – Carpooling Project</small>
-    </footer>
-</body>
-</html>
+            </form> -->
