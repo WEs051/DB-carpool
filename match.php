@@ -1,161 +1,143 @@
 <?php
-// match.php
 require 'db.php';
 
 $role    = $_GET['role'] ?? 'rider';
 $section = $_GET['section'] ?? null;
-$time    = $_GET['time'] ?? null;
 
 if (!$section) {
-    die("Section is required. Please go back and select a section.");
+    die("Section is required.");
 }
 
+// Map Section → ZoneID used in Address table
+$zoneMap = ["A" => 1, "B" => 2, "C" => 3, "D" => 4];
+if (!isset($zoneMap[$section])) {
+    die("Invalid section.");
+}
+$zoneID = $zoneMap[$section];
+
+// HTML Header
 echo "<!DOCTYPE html>";
-echo "<html lang='en'>";
-echo "<head>";
-echo "    <meta charset='UTF-8'>";
-echo "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>";
-echo "    <title>Match Results</title>";
-echo "    <link rel='stylesheet' href='index.css'>";
-echo "</head>";
-echo "<body>";
-echo "<header>";
-echo "    <h1>Carpool Match Results</h1>";
-echo "    <nav>";
-echo "        <a href='index.html'>Home</a>";
-echo "        <a href='rider.html'>Register as Rider</a>";
-echo "        <a href='provider.html'>Register as Provider</a>";
-echo "        <a href='match.html'>New Search</a>";
-echo "    </nav>";
-echo "</header>";
-echo "<main>";
-echo "<section>";
+echo "<html><head>";
+echo "<meta charset='UTF-8'>";
+echo "<title>Match Results</title>";
+echo "<link rel='stylesheet' href='index.css'>";
+echo "</head><body>";
 
-if ($role === 'rider') {
-    echo "<h2>Available Providers in Section " . htmlspecialchars($section) . "</h2>";
+// Navbar
+echo "
+<header>
+    <h1>Match Results</h1>
+    <nav>
+        <a href='index.html'>Home</a>
+        <a href='rider.html'>Register Rider</a>
+        <a href='provider.html'>Register Provider</a>
+        <a href='match.html'>New Search</a>
+    </nav>
+</header>
+";
 
-    if ($time) {
-        // Simple time window of ±1 hour
-        $stmt = $conn->prepare("
-            SELECT name, email, phone, street, city, plate, make, model, capacity, days, arrivalTime, departureTime
-            FROM Providers
-            WHERE section = ?
-              AND ABS(TIMESTAMPDIFF(MINUTE, arrivalTime, ?)) <= 60
-        ");
-        $stmt->bind_param("ss", $section, $time);
-    } else {
-        $stmt = $conn->prepare("
-            SELECT name, email, phone, street, city, plate, make, model, capacity, days, arrivalTime, departureTime
-            FROM Providers
-            WHERE section = ?
-        ");
-        $stmt->bind_param("s", $section);
-    }
+echo "<main><section>";
 
-    if (!$stmt->execute()) {
-        die("Query failed: " . $stmt->error);
-    }
 
-    $result = $stmt->get_result();
+// -------------------------------------------
+// MATCH PROVIDERS (Rider searching providers)
+// -------------------------------------------
+if ($role === "rider") {
 
-    if ($result->num_rows === 0) {
-        echo "<p>No providers found for this section/time.</p>";
-    } else {
-        echo "<table border='1' cellpadding='5'>";
-        echo "<tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Address</th>
-                <th>Car</th>
-                <th>Seats</th>
-                <th>Days</th>
-                <th>Arrival</th>
-                <th>Departure</th>
-              </tr>";
+    echo "<h2>Providers available in Section $section</h2>";
 
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($row['name']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['email']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['phone']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['street'] . ", " . $row['city']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['make'] . " " . $row['model'] . " (" . $row['plate'] . ")") . "</td>";
-            echo "<td>" . htmlspecialchars($row['capacity']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['days']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['arrivalTime']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['departureTime']) . "</td>";
-            echo "</tr>";
-        }
+    $stmt = $conn->prepare("
+        SELECT 
+            su.StudentName,
+            a.StreetName,
+            a.StreetNumber,
+            a.PostalCode,
+            v.CarPlateID,
+            v.CarModel
+        FROM Providers p
+        JOIN StudentUser su ON su.StudentID = p.StudentID
+        JOIN Address a ON a.AddressID = su.AddressID
+        LEFT JOIN Vehicle v ON v.OwnerStudentID = p.StudentID
+        WHERE su.Zone_ID = ?
+    ");
 
-        echo "</table>";
-    }
+    $stmt->bind_param("i", $zoneID);
 
-    $stmt->close();
+}
+// -------------------------------------------
+// MATCH RIDERS (Provider searching riders)
+// -------------------------------------------
+else {
 
-} else { // role = provider
-    echo "<h2>Available Riders in Section " . htmlspecialchars($section) . "</h2>";
+    echo "<h2>Riders available in Section $section</h2>";
 
-    if ($time) {
-        $stmt = $conn->prepare("
-            SELECT name, email, phone, street, city, days, arrivalTime, departureTime
-            FROM Riders
-            WHERE section = ?
-              AND ABS(TIMESTAMPDIFF(MINUTE, arrivalTime, ?)) <= 60
-        ");
-        $stmt->bind_param("ss", $section, $time);
-    } else {
-        $stmt = $conn->prepare("
-            SELECT name, email, phone, street, city, days, arrivalTime, departureTime
-            FROM Riders
-            WHERE section = ?
-        ");
-        $stmt->bind_param("s", $section);
-    }
+    $stmt = $conn->prepare("
+        SELECT 
+            su.StudentName,
+            a.StreetName,
+            a.StreetNumber,
+            a.PostalCode
+        FROM Riders r
+        JOIN StudentUser su ON su.StudentID = r.StudentID
+        JOIN Address a ON a.AddressID = su.AddressID
+        WHERE su.Zone_ID = ?
+    ");
 
-    if (!$stmt->execute()) {
-        die("Query failed: " . $stmt->error);
-    }
+    $stmt->bind_param("i", $zoneID);
 
-    $result = $stmt->get_result();
-
-    if ($result->num_rows === 0) {
-        echo "<p>No riders found for this section/time.</p>";
-    } else {
-        echo "<table border='1' cellpadding='5'>";
-        echo "<tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Address</th>
-                <th>Days</th>
-                <th>Arrival</th>
-                <th>Departure</th>
-              </tr>";
-
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($row['name']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['email']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['phone']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['street'] . ", " . $row['city']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['days']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['arrivalTime']) . "</td>";
-            echo "<td>" . htmlspecialchars($row['departureTime']) . "</td>";
-            echo "</tr>";
-        }
-
-        echo "</table>";
-    }
-
-    $stmt->close();
 }
 
-$conn->close();
 
-echo "</section>";
-echo "</main>";
+
+// -------------------------------------------
+// EXECUTE QUERY
+// -------------------------------------------
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    echo "<p>No matches found.</p>";
+} else {
+
+    echo "<table border='1' cellpadding='5'>";
+    echo "<tr>
+            <th>Name</th>
+            <th>Address</th>";
+
+    if ($role === "rider") {
+        echo "<th>Car Plate</th>";
+        echo "<th>Car Model</th>";
+    }
+
+    echo "</tr>";
+
+    while ($row = $result->fetch_assoc()) {
+
+        $address = htmlspecialchars(
+            $row['StreetName'] . " " . 
+            $row['StreetNumber'] . ", " . 
+            $row['PostalCode']
+        );
+
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($row['StudentName']) . "</td>";
+        echo "<td>$address</td>";
+
+        if ($role === "rider") {
+            echo "<td>" . htmlspecialchars($row['CarPlateID'] ?? "N/A") . "</td>";
+            echo "<td>" . htmlspecialchars($row['CarModel'] ?? "N/A") . "</td>";
+        }
+
+        echo "</tr>";
+    }
+
+    echo "</table>";
+}
+
+echo "</section></main>";
 echo "<footer><small>CPSC 2221 – Carpooling Project</small></footer>";
-echo "</body>";
-echo "</html>";
+echo "</body></html>";
+
+$stmt->close();
+$conn->close();
 ?>
