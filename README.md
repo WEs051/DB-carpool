@@ -11,16 +11,16 @@ The system uses a relational database with proper foreign keys, subtype tables, 
 
 
 DB-carpool/
-│── index.html
-│── rider.html
-│── provider.html
-│── match.html
-│── match.php
-│── insertRider.php
-│── insertProvider.php
-│── db.php
-│── database.sql ← import this file into phpMyAdmin
-└── index.css
+- index.html
+- rider.html
+- provider.html
+- match.html
+-  match.php
+- insertRider.php
+- insertProvider.php
+- db.php
+- database.sql ← import this file into phpMyAdmin
+- index.css
 
 
 ---
