@@ -1,6 +1,6 @@
 <?php
 $host = "localhost";
-$user = "root";           // please use your own user name
+$user = "";           // please use your own user name
 $pass = "";               // please use your own and password for entering 
 $dbname = "DB_carpool";   
 
