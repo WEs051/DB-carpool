@@ -19,7 +19,7 @@ DB-carpool/
 - insertRider.php
 - insertProvider.php
 - db.php
-- database.sql ← import this file into phpMyAdmin
+- database.sql  (import this file into phpMyAdmin)
 - index.css
 
 
