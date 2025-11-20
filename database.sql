@@ -25,11 +25,11 @@ CREATE TABLE `StudentUser` (
   `StudentID` int(11) NOT NULL,
   `StudentName` varchar(50) DEFAULT NULL,
   `Gender` varchar(20) DEFAULT NULL,
-  `AddressID` int(11) DEFAULT NULL,   -- optional main address
+  `AddressID` int(11) DEFAULT NULL,  
   `StreetName` varchar(30) DEFAULT NULL,
   `StreetNumber` int(11) DEFAULT NULL,
   `PostalCode` varchar(20) DEFAULT NULL,
-  `Zone_ID` int(11) DEFAULT NULL,     -- zone reference
+  `Zone_ID` int(11) DEFAULT NULL,    
   `Height` double DEFAULT NULL,
   PRIMARY KEY (`StudentID`),
   KEY `idx_student_zone` (`Zone_ID`),
@@ -45,7 +45,7 @@ CREATE TABLE `StudentUser` (
 -- Schedules: schedule master
 CREATE TABLE `Schedules` (
   `ScheduleID` int(11) NOT NULL AUTO_INCREMENT,
-  `Time` char(7) DEFAULT NULL,   -- e.g. "08:30AM"
+  `Time` char(7) DEFAULT NULL,  
   `Date` date DEFAULT NULL,
   PRIMARY KEY (`ScheduleID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -98,7 +98,6 @@ CREATE TABLE `Riders` (
 -- Subtype: Providers (ISA StudentUser)
 CREATE TABLE `Providers` (
   `StudentID` int(11) NOT NULL,
-  -- add provider-specific attributes here if needed (e.g., license number)
   PRIMARY KEY (`StudentID`),
   CONSTRAINT `providers_ibfk_1` FOREIGN KEY (`StudentID`) REFERENCES `StudentUser` (`StudentID`)
     ON DELETE CASCADE
@@ -109,7 +108,7 @@ CREATE TABLE `Providers` (
 CREATE TABLE `Vehicle` (
   `CarPlateID` char(20) NOT NULL,
   `CarModel` varchar(50) DEFAULT NULL,
-  `OwnerStudentID` int(11) DEFAULT NULL,  -- FK to Providers (a provider owns the vehicle)
+  `OwnerStudentID` int(11) DEFAULT NULL,  
   PRIMARY KEY (`CarPlateID`),
   KEY `idx_vehicle_owner` (`OwnerStudentID`),
   CONSTRAINT `vehicle_ibfk_1` FOREIGN KEY (`OwnerStudentID`) REFERENCES `Providers` (`StudentID`)
