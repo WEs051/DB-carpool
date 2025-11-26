@@ -11,7 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 // Personal info
 $name      = $_POST['name'] ?? null;
 $studentId = $_POST['studentId'] ?? null;
-$email     = $_POST['email'] ?? null;
 $phone     = $_POST['phone'] ?? null;
 
 // Address
@@ -63,11 +62,6 @@ try {
             (StudentID, StudentName, Gender, AddressID, StreetName, StreetNumber, PostalCode, Zone_ID, Height)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
-
-    // Types: i = int, s = string, d = double
-    // StudentID (i), StudentName (s), Gender (s),
-    // AddressID (i), StreetName (s), StreetNumber (i),
-    // PostalCode (s), Zone_ID (i), Height (d)
 
     $stmt->bind_param(
     "issisisid",
@@ -122,6 +116,7 @@ try {
 
 $conn->close();
 ?>
+
 
 
 
