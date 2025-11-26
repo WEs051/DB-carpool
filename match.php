@@ -56,7 +56,7 @@ if ($role === "rider") {
 
     $stmt->bind_param("i", $zoneID);
     
-else {
+}else {
 
     echo "<h2>Riders available in Section $section</h2>";
 

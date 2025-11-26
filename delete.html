@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Student Record</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+<header>
+    <h1>Delete Student Record</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="rider.html">Register as Rider</a>
+        <a href="provider.html">Register as Provider</a>
+        <a href="match.html">Find Matches</a>
+    </nav>
+</header>
+
+<main>
+<section>
+    <form action="delete.php" method="POST">
+        <label for="studentID">Enter Student ID to delete:</label><br><br>
+
+        <input type="number" name="studentID" id="studentID" required><br><br>
+
+        <button type="submit">Delete Student</button>
+    </form>
+</section>
+</main>
+
+</body>
+</html>

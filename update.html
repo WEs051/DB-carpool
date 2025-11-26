@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Student Record</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+<header>
+    <h1>Update Student Record</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="rider.html">Register as Rider</a>
+        <a href="provider.html">Register as Provider</a>
+        <a href="match.html">Find Matches</a>
+    </nav>
+</header>
+
+<main>
+<section>
+
+<form action="update.php" method="POST">
+
+    <label>Student ID:</label><br>
+    <input type="number" name="studentID" required><br><br>
+
+    <label>New Height (optional):</label><br>
+    <input type="number" name="height"><br><br>
+
+    <label>New Postal Code (optional):</label><br>
+    <input type="text" name="postalCode"><br><br>
+
+    <button type="submit">Update</button>
+
+</form>
+
+</section>
+</main>
+
+</body>
+</html>
