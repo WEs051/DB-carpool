@@ -1,4 +1,4 @@
-Carpooling DBMS Application  
+arpooling DBMS Application  
 CPSC 2221 – Database Systems Project  
 
 This web application allows students to register as **Riders** or **Providers** and find carpool matches based on **zone/section** and **address**.  
