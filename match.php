@@ -8,14 +8,12 @@ if (!$section) {
     die("Section is required.");
 }
 
-// Map Section → ZoneID used in Address table
 $zoneMap = ["A" => 1, "B" => 2, "C" => 3, "D" => 4];
 if (!isset($zoneMap[$section])) {
     die("Invalid section.");
 }
 $zoneID = $zoneMap[$section];
 
-// HTML Header
 echo "<!DOCTYPE html>";
 echo "<html><head>";
 echo "<meta charset='UTF-8'>";
@@ -23,7 +21,6 @@ echo "<title>Match Results</title>";
 echo "<link rel='stylesheet' href='index.css'>";
 echo "</head><body>";
 
-// Navbar
 echo "
 <header>
     <h1>Match Results</h1>
@@ -38,10 +35,6 @@ echo "
 
 echo "<main><section>";
 
-
-// -------------------------------------------
-// MATCH PROVIDERS (Rider searching providers)
-// -------------------------------------------
 if ($role === "rider") {
 
     echo "<h2>Providers available in Section $section</h2>";
@@ -62,11 +55,7 @@ if ($role === "rider") {
     ");
 
     $stmt->bind_param("i", $zoneID);
-
-}
-// -------------------------------------------
-// MATCH RIDERS (Provider searching riders)
-// -------------------------------------------
+    
 else {
 
     echo "<h2>Riders available in Section $section</h2>";
@@ -88,10 +77,6 @@ else {
 }
 
 
-
-// -------------------------------------------
-// EXECUTE QUERY
-// -------------------------------------------
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -141,3 +126,4 @@ echo "</body></html>";
 $stmt->close();
 $conn->close();
 ?>
+
