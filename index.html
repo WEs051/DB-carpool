@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carpooling – Langara</title>
     <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
     <header>
         <h1>Langara Carpooling</h1>
@@ -27,9 +29,6 @@
                 based on section and schedule.
             </p>
         </section>
-
-        <section>
-            <h2>What would you like to do?</h2>
             <div class="card-container">
                 <div class="card">
                     <h3>I need a ride</h3>
@@ -48,10 +47,44 @@
                 </div>
             </div>
         </section>
+        
+        <section>
+                <h2>Advanced SQL Queries</h2>
+                <div class="card-container">
+
+                    <div class="card">
+                        <h3>Division Query</h3>
+                        <p>Find providers who can pick up ALL riders in their zone.</p>
+                      <a class="button" href="division.php">Run Division Query</a>
+
+                    </div>
+
+                    <div class="card">
+                        <h3>Aggregation Queries</h3>
+                        <p>Count riders/providers per zone.</p>
+                        <a class="button" href="aggregations.php">Run Aggregations</a>
+                    </div>
+
+                    <div class="card">
+                        <h3>Nested Aggregation</h3>
+                        <p>Find the zone with the highest average height.</p>
+                        <a class="button" href="nested.php">Run Nested Query</a>
+                    </div>
+
+                    <div class="card">
+                        <h3>Update & Delete</h3>
+                        <p>Modify or remove student records.</p>
+                        <a class="button" href="update.php">Update</a>
+                        <a class="button" href="delete.php">Delete</a>
+                    </div>
+
+                </div>
+
     </main>
 
     <footer>
         <small>CPSC 2221 – Carpooling Project</small>
     </footer>
 </body>
+
 </html>
