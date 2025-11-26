@@ -5,7 +5,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $name       = $_POST['name'];
     $studentId  = $_POST['studentId'];
-    $email      = $_POST['email'];
     $phone      = $_POST['phone'];
 
     $street     = $_POST['street'];
