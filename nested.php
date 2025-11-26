@@ -1,0 +1,91 @@
+<?php
+
+require 'db.php';
+
+if (!isset($conn)) {
+    die("Database connection (\$conn) is not set. Please check db.php.");
+}
+
+$sql = "
+    SELECT 
+        Zone_ID,
+        AVG(Height) AS AvgHeight
+    FROM StudentUser
+    GROUP BY Zone_ID
+    HAVING AVG(Height) = (
+        SELECT MAX(ZoneAvg)
+        FROM (
+            SELECT AVG(Height) AS ZoneAvg
+            FROM StudentUser
+            GROUP BY Zone_ID
+        ) AS subquery
+    );
+";
+
+$result = $conn->query($sql);
+if (!$result) {
+    die("Query error: " . $conn->error);
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nested Aggregation Query</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+<header>
+    <h1>Nested Aggregation Result</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="rider.html">Register as Rider</a>
+        <a href="provider.html">Register as Provider</a>
+        <a href="match.html">Find Matches</a>
+    </nav>
+</header>
+
+<main>
+    <section>
+        <h2>Zone With Highest Average Height</h2>
+        <p>
+            This query uses <strong>nested aggregation</strong> to compute average height
+            per zone, then selects the zone(s) whose average height equals the
+            <em>maximum</em> average across all zones.
+        </p>
+
+        <?php if ($result->num_rows === 0): ?>
+            <p><em>No height data available.</em></p>
+        <?php else: ?>
+            <table border="1" cellpadding="6" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Zone ID</th>
+                        <th>Average Height</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php while ($row = $result->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($row['Zone_ID']); ?></td>
+                        <td><?php echo htmlspecialchars(number_format($row['AvgHeight'], 2)); ?></td>
+                    </tr>
+                <?php endwhile; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </section>
+</main>
+
+<footer>
+    <small>CPSC 2221 – Carpooling Project</small>
+</footer>
+
+</body>
+</html>
+
+<?php
+$result->free();
+$conn->close();
+?>
