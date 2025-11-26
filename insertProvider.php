@@ -24,7 +24,7 @@ $section      = $_POST['section'] ?? null;
 $plate    = $_POST['plate'] ?? null;
 $make     = $_POST['make'] ?? null;
 $model    = $_POST['model'] ?? null;
-$capacity = $_POST['capacity'] ?? null; // NOTE: not stored in DB under Option A
+$capacity = $_POST['capacity'] ?? null; 
 
 // Basic validation
 if (!$name || !$studentId || !$street || !$streetNumber || !$postalCode || !$section || !$plate) {
@@ -55,9 +55,8 @@ try {
     $addressId = $stmt->insert_id;
     $stmt->close();
 
-    // 2) Insert into StudentUser
-    $gender = null; // your form doesn't collect this
-    $height = null; // your form doesn't collect this
+    $gender = null;
+    $height = null; 
 
     $stmt = $conn->prepare("
         INSERT INTO StudentUser
@@ -98,7 +97,7 @@ try {
     $stmt->close();
 
     // 4) Insert into Vehicle (CarPlateID, CarModel, OwnerStudentID)
-    $carModel = trim($make . ' ' . $model); // combine make + model
+    $carModel = trim($make . ' ' . $model); 
     $stmt = $conn->prepare("
         INSERT INTO Vehicle (CarPlateID, CarModel, OwnerStudentID)
         VALUES (?, ?, ?)
@@ -110,7 +109,6 @@ try {
     }
     $stmt->close();
 
-    // Commit all
     $conn->commit();
 
     echo "<h2>Provider registered successfully!</h2>";
