@@ -14,30 +14,8 @@ if (!isset($zoneMap[$section])) {
 }
 $zoneID = $zoneMap[$section];
 
-echo "<!DOCTYPE html>";
-echo "<html><head>";
-echo "<meta charset='UTF-8'>";
-echo "<title>Match Results</title>";
-echo "<link rel='stylesheet' href='index.css'>";
-echo "</head><body>";
-
-echo "
-<header>
-    <h1>Match Results</h1>
-    <nav>
-        <a href='index.html'>Home</a>
-        <a href='rider.html'>Register Rider</a>
-        <a href='provider.html'>Register Provider</a>
-        <a href='match.html'>New Search</a>
-    </nav>
-</header>
-";
-
-echo "<main><section>";
-
 if ($role === "rider") {
-
-    echo "<h2>Providers available in Section $section</h2>";
+    $title = "Providers available in Section $section";
 
     $stmt = $conn->prepare("
         SELECT 
@@ -53,12 +31,8 @@ if ($role === "rider") {
         LEFT JOIN Vehicle v ON v.OwnerStudentID = p.StudentID
         WHERE su.Zone_ID = ?
     ");
-
-    $stmt->bind_param("i", $zoneID);
-    
-}else {
-
-    echo "<h2>Riders available in Section $section</h2>";
+} else {
+    $title = "Riders available in Section $section";
 
     $stmt = $conn->prepare("
         SELECT 
@@ -71,59 +45,105 @@ if ($role === "rider") {
         JOIN Address a ON a.AddressID = su.AddressID
         WHERE su.Zone_ID = ?
     ");
-
-    $stmt->bind_param("i", $zoneID);
-
 }
 
-
+$stmt->bind_param("i", $zoneID);
 $stmt->execute();
 $result = $stmt->get_result();
+?>
 
-if ($result->num_rows === 0) {
-    echo "<p>No matches found.</p>";
-} else {
+<!DOCTYPE html>
+<html lang="en">
 
-    echo "<table border='1' cellpadding='5'>";
-    echo "<tr>
-            <th>Name</th>
-            <th>Address</th>";
+<head>
+    <meta charset="UTF-8">
+    <title>Match Results</title>
 
-    if ($role === "rider") {
-        echo "<th>Car Plate</th>";
-        echo "<th>Car Model</th>";
-    }
+    <link rel="stylesheet" href="index.css">
 
-    echo "</tr>";
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    while ($row = $result->fetch_assoc()) {
+</head>
 
-        $address = htmlspecialchars(
-            $row['StreetName'] . " " . 
-            $row['StreetNumber'] . ", " . 
-            $row['PostalCode']
-        );
+<body>
 
-        echo "<tr>";
-        echo "<td>" . htmlspecialchars($row['StudentName']) . "</td>";
-        echo "<td>$address</td>";
+<header>
+    <h1>Match Results</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="rider.html">Register Rider</a>
+        <a href="provider.html">Register Provider</a>
+        <a href="match.html">New Search</a>
+    </nav>
+</header>
 
-        if ($role === "rider") {
-            echo "<td>" . htmlspecialchars($row['CarPlateID'] ?? "N/A") . "</td>";
-            echo "<td>" . htmlspecialchars($row['CarModel'] ?? "N/A") . "</td>";
-        }
+<main class="container my-4">
 
-        echo "</tr>";
-    }
+    <section>
+        <h2 class="mb-3"><?= htmlspecialchars($title) ?></h2>
 
-    echo "</table>";
-}
+        <?php if ($result->num_rows === 0): ?>
 
-echo "</section></main>";
-echo "<footer><small>CPSC 2221 – Carpooling Project</small></footer>";
-echo "</body></html>";
+            <div class="alert alert-warning">
+                No matches found in this section.
+            </div>
 
+        <?php else: ?>
+
+            <div class="card p-3">
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Address</th>
+
+                            <?php if ($role === "rider"): ?>
+                                <th>Car Plate</th>
+                                <th>Car Model</th>
+                            <?php endif; ?>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <?php while ($row = $result->fetch_assoc()): ?>
+                            <?php
+                                $address = htmlspecialchars($row['StreetName'] . " " . 
+                                                            $row['StreetNumber'] . ", " .
+                                                            $row['PostalCode']);
+                            ?>
+                            <tr>
+                                <td><?= htmlspecialchars($row['StudentName']) ?></td>
+                                <td><?= $address ?></td>
+
+                                <?php if ($role === "rider"): ?>
+                                    <td><?= htmlspecialchars($row['CarPlateID'] ?? "N/A") ?></td>
+                                    <td><?= htmlspecialchars($row['CarModel'] ?? "N/A") ?></td>
+                                <?php endif; ?>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+
+                </table>
+            </div>
+
+        <?php endif; ?>
+
+    </section>
+
+</main>
+
+<footer>
+    <small>CPSC 2221 – Carpooling Project</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+<?php
 $stmt->close();
 $conn->close();
 ?>
-

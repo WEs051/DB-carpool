@@ -6,7 +6,6 @@ if (!isset($conn)) {
     die("Database connection (\$conn) is not set. Check db.php.");
 }
 
-
 $sql_riders = "
     SELECT 
         SU.Zone_ID,
@@ -18,11 +17,7 @@ $sql_riders = "
     GROUP BY SU.Zone_ID, A.ZoneName
     ORDER BY SU.Zone_ID;
 ";
-
 $result_riders = $conn->query($sql_riders);
-if (!$result_riders) {
-    die("Query error (riders): " . $conn->error);
-}
 
 $sql_providers = "
     SELECT 
@@ -35,19 +30,24 @@ $sql_providers = "
     GROUP BY SU.Zone_ID, A.ZoneName
     ORDER BY SU.Zone_ID;
 ";
-
 $result_providers = $conn->query($sql_providers);
-if (!$result_providers) {
-    die("Query error (providers): " . $conn->error);
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Aggregation Queries</title>
+
     <link rel="stylesheet" href="index.css">
+
+    <!-- Bootstrap CSS -->
+    <link 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+        rel="stylesheet"
+    >
 </head>
+
 <body>
 
 <header>
@@ -60,61 +60,65 @@ if (!$result_providers) {
     </nav>
 </header>
 
-<main>
+<main class="container my-4">
 
+    <!-- Rider Aggregation -->
     <section>
-        <h2>Rider Count per Zone</h2>
+        <h2 class="mb-3">Rider Count per Zone</h2>
 
         <?php if ($result_riders->num_rows === 0): ?>
-            <p>No rider data found.</p>
+            <div class="alert alert-warning">No rider data found.</div>
         <?php else: ?>
-            <table border="1" cellpadding="6" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Zone ID</th>
-                        <th>Zone Name</th>
-                        <th>Number of Riders</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = $result_riders->fetch_assoc()): ?>
+            <div class="card mb-4 p-3">
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
                         <tr>
-                            <td><?php echo htmlspecialchars($row['Zone_ID']); ?></td>
-                            <td><?php echo htmlspecialchars($row['ZoneName']); ?></td>
-                            <td><?php echo htmlspecialchars($row['RiderCount']); ?></td>
+                            <th>Zone ID</th>
+                            <th>Zone Name</th>
+                            <th>Number of Riders</th>
                         </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = $result_riders->fetch_assoc()): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['Zone_ID']); ?></td>
+                                <td><?php echo htmlspecialchars($row['ZoneName']); ?></td>
+                                <td><?php echo htmlspecialchars($row['RiderCount']); ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
         <?php endif; ?>
     </section>
 
-    <hr>
-
+    <!-- Provider Aggregation -->
     <section>
-        <h2>Provider Count per Zone</h2>
+        <h2 class="mb-3">Provider Count per Zone</h2>
 
         <?php if ($result_providers->num_rows === 0): ?>
-            <p>No provider data found.</p>
+            <div class="alert alert-warning">No provider data found.</div>
         <?php else: ?>
-            <table border="1" cellpadding="6" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Zone ID</th>
-                        <th>Zone Name</th>
-                        <th>Number of Providers</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = $result_providers->fetch_assoc()): ?>
+            <div class="card p-3">
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
                         <tr>
-                            <td><?php echo htmlspecialchars($row['Zone_ID']); ?></td>
-                            <td><?php echo htmlspecialchars($row['ZoneName']); ?></td>
-                            <td><?php echo htmlspecialchars($row['ProviderCount']); ?></td>
+                            <th>Zone ID</th>
+                            <th>Zone Name</th>
+                            <th>Number of Providers</th>
                         </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = $result_providers->fetch_assoc()): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['Zone_ID']); ?></td>
+                                <td><?php echo htmlspecialchars($row['ZoneName']); ?></td>
+                                <td><?php echo htmlspecialchars($row['ProviderCount']); ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
         <?php endif; ?>
     </section>
 
@@ -123,6 +127,9 @@ if (!$result_providers) {
 <footer>
     <small>CPSC 2221 – Carpooling Project</small>
 </footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

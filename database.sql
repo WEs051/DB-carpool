@@ -150,3 +150,38 @@ CREATE TABLE `IsRidingWith` (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
+--trigers----
+CREATE TABLE RegistrationLog (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    studentID INT,
+    action VARCHAR(50),
+    log_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DELIMITER $$
+
+CREATE TRIGGER log_rider_insert
+AFTER INSERT ON Riders
+FOR EACH ROW
+BEGIN
+    INSERT INTO RegistrationLog(studentID, action)
+    VALUES (NEW.StudentID, 'Rider Registered');
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER log_provider_insert
+AFTER INSERT ON Providers
+FOR EACH ROW
+BEGIN
+    INSERT INTO RegistrationLog(studentID, action)
+    VALUES (NEW.StudentID, 'Provider Registered');
+END$$
+
+DELIMITER ;
+

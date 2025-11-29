@@ -1,76 +1,70 @@
-/* index.css */
 
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
+        header {
+            background-color: #F57C00;
+            color: white;
+            padding: 25px 40px;
+            margin-bottom: 40px;
+        }
 
-header, footer {
-    background: #f36f21;
-    color: white;
-    padding: 1rem;
-}
+        header h1 {
+            font-weight: 800;
+        }
 
-header h1 {
-    margin: 0 0 0.3rem;
-}
+        nav a {
+            color: white;
+            font-weight: 600;
+            margin-right: 25px;
+            text-decoration: none;
+        }
 
-nav a {
-    margin-right: 1rem;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-}
+        nav a:hover {
+            text-decoration: underline;
+        }
 
-nav a:hover {
-    text-decoration: underline;
-}
+        .card-custom {
+            border-radius: 12px;
+            padding: 25px;
+            background: white;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border: none;
+            transition: 0.2s ease;
+        }
 
-main {
-    padding: 1.5rem;
-}
+        .card-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 22px rgba(0,0,0,0.12);
+        }
 
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
+        .btn-orange {
+            background-color: #F57C00;
+            border: none;
+            padding: 10px 18px;
+            color: white;
+            font-weight: 600;
+            border-radius: 8px;
+        }
 
-.card {
-    border: 1px solid #ddd;
-    padding: 1rem;
-    border-radius: 6px;
-    max-width: 260px;
-}
+        .btn-orange:hover {
+            background-color: #d96c00;
+        }
 
-.button {
-    display: inline-block;
-    margin-top: 0.5rem;
-    padding: 0.4rem 0.8rem;
-    background: #f36f21;
-    color: white;
-    border-radius: 4px;
-    text-decoration: none;
-}
+        .btn-red {
+            background-color: #D32F2F;
+            color: white;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-weight: 600;
+            border: none;
+        }
 
-form {
-    display: grid;
-    gap: 0.6rem;
-    max-width: 500px;
-}
+        .btn-red:hover {
+            background-color: #b71c1c;
+        }
 
-fieldset {
-    border: 1px solid #ccc;
-    padding: 0.8rem;
-    margin-bottom: 1rem;
-}
-
-label {
-    display: block;
-    margin-bottom: 0.2rem;
-}
-
-input, select, button {
-    padding: 0.4rem;
-}
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            background: #f4f4f4;
+            text-align: center;
+            font-size: 14px;
+        }

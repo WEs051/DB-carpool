@@ -29,11 +29,20 @@ if (!$result) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Nested Aggregation Query</title>
+
     <link rel="stylesheet" href="index.css">
+
+    <!-- Bootstrap CSS -->
+    <link 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+        rel="stylesheet"
+    >
 </head>
+
 <body>
 
 <header>
@@ -46,41 +55,53 @@ if (!$result) {
     </nav>
 </header>
 
-<main>
+<main class="container my-4">
+
     <section>
-        <h2>Zone With Highest Average Height</h2>
-        <p>
-            This query uses <strong>nested aggregation</strong> to compute average height
-            per zone, then selects the zone(s) whose average height equals the
-            <em>maximum</em> average across all zones.
+        <h2 class="mb-3">Zone With Highest Average Height</h2>
+
+        <p class="mb-3">
+            This query uses <strong>nested aggregation</strong> to compute the
+            average height for each zone, then returns the zone(s) whose 
+            average height equals the <em>maximum</em> average across all zones.
         </p>
 
         <?php if ($result->num_rows === 0): ?>
-            <p><em>No height data available.</em></p>
+            <div class="alert alert-warning">No height data available.</div>
         <?php else: ?>
-            <table border="1" cellpadding="6" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Zone ID</th>
-                        <th>Average Height</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php while ($row = $result->fetch_assoc()): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($row['Zone_ID']); ?></td>
-                        <td><?php echo htmlspecialchars(number_format($row['AvgHeight'], 2)); ?></td>
-                    </tr>
-                <?php endwhile; ?>
-                </tbody>
-            </table>
+
+            <div class="card p-3">
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Zone ID</th>
+                            <th>Average Height</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <?php while ($row = $result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($row['Zone_ID']); ?></td>
+                                <td><?php echo htmlspecialchars(number_format($row['AvgHeight'], 2)); ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+
         <?php endif; ?>
+
     </section>
+
 </main>
 
 <footer>
     <small>CPSC 2221 – Carpooling Project</small>
 </footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

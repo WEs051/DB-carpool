@@ -30,7 +30,6 @@ if (!$name || !$studentId || !$street || !$streetNumber || !$postalCode || !$sec
     die("Missing required fields. Please go back and fill in all required fields.");
 }
 
-// Map section A/B/C/D → Zone_ID 1/2/3/4
 $zoneMap = ['A' => 1, 'B' => 2, 'C' => 3, 'D' => 4];
 if (!isset($zoneMap[$section])) {
     die("Invalid section.");
@@ -40,7 +39,6 @@ $zoneID = $zoneMap[$section];
 try {
     $conn->begin_transaction();
 
-    // 1) Insert into Address
     $stmt = $conn->prepare("
         INSERT INTO Address (StreetName, StreetNumber, PostalCode, Zone_ID)
         VALUES (?, ?, ?, ?)
@@ -48,14 +46,13 @@ try {
     $streetNumberInt = (int)$streetNumber;
     $stmt->bind_param("sisi", $street, $streetNumberInt, $postalCode, $zoneID);
 
-    if (!$stmt->execute()) {
-        throw new Exception("Address insert failed: " . $stmt->error);
-    }
+    if (!$stmt->execute()) throw new Exception("Address insert failed: " . $stmt->error);
+
     $addressId = $stmt->insert_id;
     $stmt->close();
 
     $gender = null;
-    $height = null; 
+    $height = null;
 
     $stmt = $conn->prepare("
         INSERT INTO StudentUser
@@ -64,50 +61,33 @@ try {
     ");
 
     $stmt->bind_param(
-    "issisisid",
-    $studentId,
-    $name,
-    $gender,
-    $addressId,
-    $street,
-    $streetNumberInt,
-    $postalCode,
-    $zoneID,
-    $height
+        "issisisid",
+        $studentId, $name, $gender,
+        $addressId, $street, $streetNumberInt,
+        $postalCode, $zoneID, $height
     );
 
-    if (!$stmt->execute()) {
-        throw new Exception("StudentUser insert failed: " . $stmt->error);
-    }
+    if (!$stmt->execute()) throw new Exception("StudentUser insert failed: " . $stmt->error);
     $stmt->close();
 
-    // 3) Insert into Providers (subtype)
     $stmt = $conn->prepare("INSERT INTO Providers (StudentID) VALUES (?)");
     $stmt->bind_param("i", $studentId);
 
-    if (!$stmt->execute()) {
-        throw new Exception("Providers insert failed: " . $stmt->error);
-    }
+    if (!$stmt->execute()) throw new Exception("Providers insert failed: " . $stmt->error);
     $stmt->close();
 
-    // 4) Insert into Vehicle (CarPlateID, CarModel, OwnerStudentID)
-    $carModel = trim($make . ' ' . $model); 
+    $carModel = trim($make . " " . $model);
+
     $stmt = $conn->prepare("
         INSERT INTO Vehicle (CarPlateID, CarModel, OwnerStudentID)
         VALUES (?, ?, ?)
     ");
     $stmt->bind_param("ssi", $plate, $carModel, $studentId);
 
-    if (!$stmt->execute()) {
-        throw new Exception("Vehicle insert failed: " . $stmt->error);
-    }
+    if (!$stmt->execute()) throw new Exception("Vehicle insert failed: " . $stmt->error);
     $stmt->close();
 
     $conn->commit();
-
-    echo "<h2>Provider registered successfully!</h2>";
-    echo '<p><a href="provider.html">Register another provider</a></p>';
-    echo '<p><a href="index.html">Back to home</a></p>';
 
 } catch (Exception $e) {
     $conn->rollback();
@@ -117,7 +97,53 @@ try {
 $conn->close();
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Provider Registered</title>
 
+    <link rel="stylesheet" href="index.css">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
 
+<body>
 
+<header>
+    <h1>Provider Registration</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="rider.html">Register Rider</a>
+        <a href="provider.html">Register Provider</a>
+        <a href="match.html">Find Matches</a>
+    </nav>
+</header>
+
+<main class="container mt-4">
+
+    <div class="card p-4 shadow-sm">
+
+        <h2 class="text-success mb-3">Provider registered successfully!</h2>
+
+        <p><strong>Name:</strong> <?= htmlspecialchars($name) ?></p>
+        <p><strong>Student ID:</strong> <?= htmlspecialchars($studentId) ?></p>
+        <p><strong>Section:</strong> <?= htmlspecialchars($section) ?></p>
+
+        <hr>
+
+        <a href="provider.html" class="btn btn-primary w-100 mb-3">Register Another Provider</a>
+        <a href="index.html" class="btn btn-secondary w-100">Back to Home</a>
+
+    </div>
+
+</main>
+
+<footer>
+    <small>CPSC 2221 – Carpooling Project</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

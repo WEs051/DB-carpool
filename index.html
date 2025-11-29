@@ -1,90 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carpooling – Langara</title>
+    <title>Langara Carpooling</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="index.css">
+    
 </head>
 
 <body>
-    <header>
-        <h1>Langara Carpooling</h1>
-        <p>Connect riders and providers by section and schedule.</p>
-        <nav>
-            <a href="rider.html">Register as Rider</a>
-            <a href="provider.html">Register as Provider</a>
-            <a href="match.html">Find Matches</a>
-        </nav>
-    </header>
 
-    <main>
-        <section>
-            <h2>About this system</h2>
-            <p>
-                This application helps Langara students and staff who have vehicles
-                (providers) share rides with those who need transportation (riders).
-                Vancouver is divided into 4 sections; riders and providers are matched
-                based on section and schedule.
-            </p>
-        </section>
-            <div class="card-container">
-                <div class="card">
-                    <h3>I need a ride</h3>
-                    <p>Register as a rider and provide your address and schedule.</p>
-                    <a class="button" href="rider.html">Register as Rider</a>
-                </div>
-                <div class="card">
-                    <h3>I can provide a ride</h3>
-                    <p>Register as a provider and add your vehicle and time slots.</p>
-                    <a class="button" href="provider.html">Register as Provider</a>
-                </div>
-                <div class="card">
-                    <h3>View matches</h3>
-                    <p>See available providers or riders based on section and time.</p>
-                    <a class="button" href="match.html">Find Matches</a>
+<header>
+    <h1>Langara Carpooling</h1>
+    <nav>
+        <a href="rider.html">Register as Rider</a>
+        <a href="provider.html">Register as Provider</a>
+        <a href="match.html">Find Matches</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <div class="mb-4">
+        <h2><strong>About this System</strong></h2>
+        <p class="lead">
+            This application helps Langara students and staff who have vehicles (providers)
+            share rides with those who need transportation (riders). Vancouver is divided into 
+            4 sections; riders and providers are matched based on section and schedule.
+        </p>
+    </div>
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-4">
+            <div class="card-custom">
+                <h4>I need a ride</h4>
+                <p>Register as a rider and provide your address and schedule.</p>
+                <a class="btn btn-orange" href="rider.html">Register as Rider</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card-custom">
+                <h4>I can provide a ride</h4>
+                <p>Add your vehicle and time slots to offer rides.</p>
+                <a class="btn btn-orange" href="provider.html">Register as Provider</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card-custom">
+                <h4>View matches</h4>
+                <p>See riders or providers based on section and schedule.</p>
+                <a class="btn btn-orange" href="match.html">Find Matches</a>
+            </div>
+        </div>
+
+    </div>
+
+    <h2 class="fw-bold mb-3">Advanced SQL Queries</h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <div class="card-custom">
+                <h5>Division Query</h5>
+                <p>Providers who can pick up all riders in their zone.</p>
+                <a class="btn btn-secondary" href="division.php">Run Query</a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-custom">
+                <h5>Aggregations</h5>
+                <p>Counts of riders and providers per zone.</p>
+                <a class="btn btn-secondary" href="aggregation.php">Run Aggregations</a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-custom">
+                <h5>Nested Aggregation</h5>
+                <p>Find the zone with the highest average height.</p>
+                <a class="btn btn-secondary" href="nested.php">Run Query</a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-custom">
+                <h5>Update & Delete</h5>
+                <p>Modify or remove student records.</p>
+                <div class="d-flex gap-2">
+                    <a class="btn btn-orange" href="update.html">Update</a>
+                    <a class="btn btn-red" href="delete.html">Delete</a>
                 </div>
             </div>
-        </section>
-        
-        <section>
-                <h2>Advanced SQL Queries</h2>
-                <div class="card-container">
+        </div>
 
-                    <div class="card">
-                        <h3>Division Query</h3>
-                        <p>Find providers who can pick up ALL riders in their zone.</p>
-                      <a class="button" href="division.php">Run Division Query</a>
+    </div>
 
-                    </div>
+</div>
 
-                    <div class="card">
-                        <h3>Aggregation Queries</h3>
-                        <p>Count riders/providers per zone.</p>
-                        <a class="button" href="aggregation.php">Run Aggregations</a>
-                    </div>
+<footer>
+    <small>CPSC 2221 – Carpooling Project</small>
+</footer>
 
-                    <div class="card">
-                        <h3>Nested Aggregation</h3>
-                        <p>Find the zone with the highest average height.</p>
-                        <a class="button" href="nested.php">Run Nested Query</a>
-                    </div>
-
-                    <div class="card">
-                        <h3>Update & Delete</h3>
-                        <p>Modify or remove student records.</p>
-                        <a class="button" href="update.html">Update</a>
-                        <a class="button" href="delete.html">Delete</a>
-                    </div>
-
-                </div>
-
-    </main>
-
-    <footer>
-        <small>CPSC 2221 – Carpooling Project</small>
-    </footer>
 </body>
-
 </html>
+

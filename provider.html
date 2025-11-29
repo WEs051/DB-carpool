@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Provider – Carpooling</title>
+
     <link rel="stylesheet" href="index.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+
 <body>
+
     <header>
         <h1>Register as Provider</h1>
         <nav>
@@ -16,74 +23,98 @@
         </nav>
     </header>
 
-    <main>
+    <main class="container my-4">
         <section>
-            <h2>Your Information</h2>
+            <h2 class="mb-4">Your Information</h2>
 
+            <form action="insertProvider.php" method="post">
 
+                <div class="card-custom mb-4">
+                    <h4 class="mb-3">Personal Info</h4>
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="studentId" class="form-label">Student / Employee ID</label>
+                        <input type="text" id="studentId" name="studentId" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="tel" id="phone" name="phone" class="form-control">
+                    </div>
+                </div>
+
+                <div class="card-custom mb-4">
+                    <h4 class="mb-3">Address & Section</h4>
+
+                    <div class="mb-3">
+                        <label for="street" class="form-label">Street Name</label>
+                        <input type="text" id="street" name="street" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="streetNumber" class="form-label">Street Number</label>
+                        <input type="number" id="streetNumber" name="streetNumber" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="postalCode" class="form-label">Postal Code</label>
+                        <input type="text" id="postalCode" name="postalCode" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="section" class="form-label">Section</label>
+                        <select id="section" name="section" class="form-select" required>
+                            <option value="A">Section A</option>
+                            <option value="B">Section B</option>
+                            <option value="C">Section C</option>
+                            <option value="D">Section D</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card-custom mb-4">
+                    <h4 class="mb-3">Vehicle Info</h4>
+
+                    <div class="mb-3">
+                        <label for="plate" class="form-label">License Plate</label>
+                        <input type="text" id="plate" name="plate" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="make" class="form-label">Car Make</label>
+                        <input type="text" id="make" name="make" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="model" class="form-label">Car Model</label>
+                        <input type="text" id="model" name="model" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="capacity" class="form-label">Available Seats (excluding driver)</label>
+                        <input type="number" id="capacity" name="capacity" class="form-control" min="1" max="6" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-orange">Register Provider</button>
+
+            </form>
         </section>
     </main>
-        <form action="insertProvider.php" method="post">
-
-        <fieldset>
-            <legend>Personal Info</legend>
-
-            <label for="name">Full Name:</label>
-            <input type="text" id="name" name="name" required>
-
-            <label for="studentId">Student / Employee ID:</label>
-            <input type="text" id="studentId" name="studentId" required>
-
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="phone">Phone:</label>
-            <input type="tel" id="phone" name="phone">
-        </fieldset>
-
-        <fieldset>
-            <legend>Address & Section</legend>
-
-            <label for="street">Street Name:</label>
-            <input type="text" id="street" name="street" required>
-
-            <label for="streetNumber">Street Number:</label>
-            <input type="number" id="streetNumber" name="streetNumber" required>
-
-            <label for="postalCode">Postal Code:</label>
-            <input type="text" id="postalCode" name="postalCode" required>
-
-            <label for="section">Section (A–D):</label>
-            <select id="section" name="section" required>
-                <option value="A">Section A</option>
-                <option value="B">Section B</option>
-                <option value="C">Section C</option>
-                <option value="D">Section D</option>
-            </select>
-        </fieldset>
-
-        <fieldset>
-            <legend>Vehicle Info</legend>
-
-            <label for="plate">License Plate:</label>
-            <input type="text" id="plate" name="plate" required>
-
-            <label for="make">Car Make:</label>
-            <input type="text" id="make" name="make">
-
-            <label for="model">Car Model:</label>
-            <input type="text" id="model" name="model">
-
-            <label for="capacity">Available Seats (excluding driver):</label>
-            <input type="number" id="capacity" name="capacity" min="1" max="6" required>
-
-        </fieldset>
-
-        <button type="submit">Register Provider</button>
-    </form>
 
     <footer>
         <small>CPSC 2221 – Carpooling Project</small>
     </footer>
+
 </body>
 </html>

@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
-$user = "";           // please use your own user name
-$pass = "";               // please use your own and password for entering 
+$user = "root";           // please use your own user name
+$pass = "Senpara@8";               // please use your own and password for entering 
 $dbname = "DB_carpool";   
 
 $conn = new mysqli($host, $user, $pass, $dbname);
